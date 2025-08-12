@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "build":[
+  "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": {"distDir": "dist"}
+      "config": { "distDir": "dist" }
     }
   ],
-  "rewrites":[
-    {"source": "/(.*)" , "destination":"/"}
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
