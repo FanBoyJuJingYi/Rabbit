@@ -100,14 +100,11 @@ const adminOrderSlice = createSlice({
         state.page = action.payload.page;
         state.totalPages = action.payload.totalPages;
         state.totalOrders = action.payload.totalOrders;
-<<<<<<< HEAD
         state.totalSales = action.payload.orders.reduce(
           (sum, o) => sum + (o.totalPrice || 0),
           0
         );
-=======
         state.totalSales = action.payload.totalRevenue;
->>>>>>> 1aa479b (Upload 2)
       })
       .addCase(fetchAllOrders.rejected, (state, action) => {
         state.loading = false;

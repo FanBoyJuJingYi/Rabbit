@@ -93,11 +93,7 @@ const CollectionPage = () => {
           products={products}
           loading={loading}
           error={error}
-<<<<<<< HEAD
           favorites={favorites.map((f) => f._id || f)} // assuming favorites array of IDs or product objects
-=======
-          favorites={favorites.map((f) => f._id || f)}
->>>>>>> 1aa479b (Upload 2)
           toggleFavorite={toggleFavorite}
         />
       </main>

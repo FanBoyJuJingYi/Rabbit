@@ -14,11 +14,6 @@ router.get('/summary', async (req, res) => {
     const usersCount = await User.countDocuments();
     const ordersCount = await Order.countDocuments();
     const totalSales = await Order.aggregate([
-<<<<<<< HEAD
-      { $match: { isPaid: true } },
-=======
-      // { $match: { isPaid: true } },
->>>>>>> 1aa479b (Upload 2)
       { $group: { _id: null, total: { $sum: '$totalPrice' } } },
     ]);
     res.json({
@@ -31,16 +26,6 @@ router.get('/summary', async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-// GET /api/admin/revenue/sales/monthly
-router.get('/sales/monthly', async (req, res) => {
-  try {
-    const monthlySales = await Order.aggregate([
-      { $match: { isPaid: true } },
-      {
-        $group: {
-          _id: { year: { $year: '$paidAt' }, month: { $month: '$paidAt' } },
-=======
 // GET /api/admin/revenue/sales/:period
 router.get('/sales/:period', async (req, res) => {
   try {
@@ -60,8 +45,8 @@ router.get('/sales/:period', async (req, res) => {
           _id: {
             year: { $year: '$paidAt' },
             quarter: {
-              $ceil: { $divide: [{ $month: '$paidAt' }, 3] }
-            }
+              $ceil: { $divide: [{ $month: '$paidAt' }, 3] },
+            },
           },
         };
         sortBy = { '_id.year': 1, '_id.quarter': 1 };
@@ -81,36 +66,19 @@ router.get('/sales/:period', async (req, res) => {
       {
         $group: {
           ...groupBy,
->>>>>>> 1aa479b (Upload 2)
           totalSales: { $sum: '$totalPrice' },
           count: { $sum: 1 },
         },
       },
-<<<<<<< HEAD
-      { $sort: { '_id.year': 1, '_id.month': 1 } },
-    ]);
-    res.json(monthlySales);
-=======
       { $sort: sortBy },
     ]);
 
     res.json(salesData);
->>>>>>> 1aa479b (Upload 2)
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
 });
 
-<<<<<<< HEAD
-// GET /api/admin/revenue/targets/monthly
-router.get('/targets/monthly', async (req, res) => {
-  try {
-    // Trả dữ liệu mẫu (nếu chưa có model Target)
-    res.json([
-      { _id: '2025-07', targetAmount: 1000000 },
-      { _id: '2025-08', targetAmount: 1500000 },
-    ]);
-=======
 // GET /api/admin/revenue/targets/:period
 router.get('/targets/:period', async (req, res) => {
   try {
@@ -133,10 +101,11 @@ router.get('/targets/:period', async (req, res) => {
         { _id: { year: 2024 }, targetAmount: 10000000 },
         { _id: { year: 2025 }, targetAmount: 15000000 },
       ];
+    } else {
+      return res.status(400).json({ message: 'Invalid period' });
     }
 
     res.json(targets);
->>>>>>> 1aa479b (Upload 2)
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
@@ -151,7 +120,7 @@ router.get('/orders/recent', async (req, res) => {
       .populate('user', 'name email')
       .populate({
         path: 'orderItems.productId',
-        select: 'name images', // Lấy cả tên và ảnh
+        select: 'name images',
       });
 
     res.json(recentOrders);
@@ -160,25 +129,6 @@ router.get('/orders/recent', async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-// GET /api/admin/revenue/statistics/monthly
-router.get('/statistics/monthly', async (req, res) => {
-  try {
-    const stats = await Order.aggregate([
-      {
-        $group: {
-          _id: {
-            year: { $year: '$createdAt' },
-            month: { $month: '$createdAt' },
-          },
-          totalOrders: { $sum: 1 },
-          totalRevenue: { $sum: '$totalPrice' },
-          count: { $sum: 1 },
-        },
-      },
-      { $sort: { '_id.year': 1, '_id.month': 1 } },
-    ]);
-=======
 // GET /api/admin/revenue/statistics/:period
 router.get('/statistics/:period', async (req, res) => {
   try {
@@ -198,8 +148,8 @@ router.get('/statistics/:period', async (req, res) => {
           _id: {
             year: { $year: '$createdAt' },
             quarter: {
-              $ceil: { $divide: [{ $month: '$createdAt' }, 3] }
-            }
+              $ceil: { $divide: [{ $month: '$createdAt' }, 3] },
+            },
           },
         };
         sortBy = { '_id.year': 1, '_id.quarter': 1 };
@@ -225,15 +175,10 @@ router.get('/statistics/:period', async (req, res) => {
       { $sort: sortBy },
     ]);
 
->>>>>>> 1aa479b (Upload 2)
     res.json(stats);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
 });
 
-<<<<<<< HEAD
 module.exports = router;
-=======
-module.exports = router;
->>>>>>> 1aa479b (Upload 2)

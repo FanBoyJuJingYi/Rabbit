@@ -4,13 +4,12 @@ import ProductGrid from "./ProductGrid";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
-import { fetchProductDetails } from "../../redux/slices/productsSlice";
-import { fetchSimilarProducts } from "../../redux/slices/productsSlice";
+import {
+  fetchProductDetails,
+  fetchSimilarProducts,
+} from "../../redux/slices/productsSlice";
 import CommentSection from "../Comment/CommentSection";
-<<<<<<< HEAD
-=======
 import { addFavorite, removeFavorite } from "../../redux/slices/favoritesSlice";
->>>>>>> 1aa479b (Upload 2)
 
 const ProductDetails = ({ productId }) => {
   const { id } = useParams();
@@ -22,16 +21,14 @@ const ProductDetails = ({ productId }) => {
     (state) => state.products
   );
   const { user, guestId } = useSelector((state) => state.auth);
+  const { favorites } = useSelector((state) => state.favorites);
+
   const [mainImage, setMainImage] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [colorImages, setColorImages] = useState({});
-<<<<<<< HEAD
-=======
-  const { favorites } = useSelector((state) => state.favorites);
->>>>>>> 1aa479b (Upload 2)
 
   useEffect(() => {
     if (productFetchId) {
@@ -72,8 +69,7 @@ const ProductDetails = ({ productId }) => {
       setQuantity((prev) => prev - 1);
     }
   };
-<<<<<<< HEAD
-=======
+
   const toggleFavorite = (productId) => {
     const isFav = favorites.includes(productId);
     if (isFav) {
@@ -88,7 +84,6 @@ const ProductDetails = ({ productId }) => {
       });
     }
   };
->>>>>>> 1aa479b (Upload 2)
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -284,64 +279,51 @@ const ProductDetails = ({ productId }) => {
               {/* Add to Cart Button */}
               <button
                 onClick={handleAddToCart}
-                disabled={isButtonDisabled}
-                className={`w-full py-3 px-6 rounded-md font-medium text-white transition-colors ${
-                  isButtonDisabled
+                disabled={
+                  isButtonDisabled || selectedProduct.countInStock === 0
+                }
+                className={`w-full py-3 rounded-md text-white font-semibold transition-colors ${
+                  selectedProduct.countInStock === 0 || isButtonDisabled
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-black hover:bg-gray-800"
+                    : "bg-black hover:bg-gray-900"
                 }`}
               >
-                {isButtonDisabled ? "Adding..." : "ADD TO CART"}
+                Add to Cart
               </button>
 
-              {/* Product Details */}
-              <div className="mt-8 pt-6 border-t">
-                <h3 className="text-xl font-bold mb-4">Product Details</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-gray-600">Brand</p>
-                    <p className="font-medium">
-                      {selectedProduct.brand || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Material</p>
-                    <p className="font-medium">
-                      {selectedProduct.material || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Category</p>
-                    <p className="font-medium">
-                      {selectedProduct.category || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">SKU</p>
-                    <p className="font-medium">{selectedProduct._id}</p>
-                  </div>
-                </div>
+              {/* Favorite Button */}
+              <div className="mt-4 text-right">
+                <button
+                  onClick={() => toggleFavorite(productFetchId)}
+                  className="text-red-500 hover:text-red-700 transition-colors"
+                  aria-label="Toggle favorite"
+                >
+                  {favorites.includes(productFetchId)
+                    ? "♥ Remove from favorites"
+                    : "♡ Add to favorites"}
+                </button>
               </div>
             </div>
           </div>
 
+          {/* Comment Section */}
+          <div className="mt-10">
+            <CommentSection productId={productFetchId} />
+          </div>
+
           {/* Similar Products */}
-          <div className="mt-16 pt-8 border-t">
-            <h2 className="text-2xl text-center font-bold mb-8">
-              You May Also Like
-            </h2>
+          <div className="mt-16">
+            <h2 className="text-xl font-semibold mb-4">Similar Products</h2>
             <ProductGrid
               products={similarProducts}
               loading={loading}
               error={error}
-<<<<<<< HEAD
-=======
-              favorites={favorites.map((f) => f._id || f)}
+              favorites={favorites.map((f) =>
+                typeof f === "object" ? f._id : f
+              )}
               toggleFavorite={toggleFavorite}
->>>>>>> 1aa479b (Upload 2)
             />
           </div>
-          <CommentSection productId={productFetchId} />
         </div>
       )}
     </div>

@@ -18,14 +18,7 @@ router.get("/", protect, admin, async (req, res) => {
       filter.category = category;
     }
 
-<<<<<<< HEAD
     const totalProducts = await Product.countDocuments(filter);
-=======
-    // tổng sản phẩm (không phân trang)
-    const totalProducts = await Product.countDocuments(filter);
-
-    // lấy sản phẩm theo trang
->>>>>>> 1aa479b (Upload 2)
     const products = await Product.find(filter)
       .skip(skip)
       .limit(limit)
@@ -34,13 +27,8 @@ router.get("/", protect, admin, async (req, res) => {
     res.status(200).json({
       products,
       page,
-<<<<<<< HEAD
       pages: Math.ceil(totalProducts / limit),
       totalProducts,
-=======
-      totalPages: Math.ceil(totalProducts / limit),
-      totalProducts
->>>>>>> 1aa479b (Upload 2)
     });
   } catch (error) {
     console.error('Error fetching products:', error);

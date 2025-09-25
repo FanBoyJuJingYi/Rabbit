@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
 import { Link } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
-=======
-import { Link, useNavigate } from "react-router-dom"; // thêm useNavigate
-import { HiOutlineHeart, HiHeart } from "react-icons/hi";
-import { useSelector } from "react-redux"; // nếu dùng redux
->>>>>>> 1aa479b (Upload 2)
 
 const ProductGrid = ({
   products = [],
@@ -18,12 +12,6 @@ const ProductGrid = ({
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 16;
 
-<<<<<<< HEAD
-=======
-  const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth); // lấy thông tin user từ redux
-
->>>>>>> 1aa479b (Upload 2)
   const indexOfLast = currentPage * productsPerPage;
   const indexOfFirst = indexOfLast - productsPerPage;
   const currentProducts = products.slice(indexOfFirst, indexOfLast);
@@ -52,15 +40,6 @@ const ProductGrid = ({
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-<<<<<<< HEAD
-=======
-
-                        if (!user) {
-                          // nếu chưa đăng nhập thì điều hướng
-                          navigate("/login");
-                          return;
-                        }
->>>>>>> 1aa479b (Upload 2)
                         toggleFavorite(product._id);
                       }}
                       className="absolute bottom-2 left-2 p-1 rounded-full shadow-md hover:scale-110 transition-transform flex items-center justify-center"

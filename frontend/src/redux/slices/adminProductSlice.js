@@ -94,11 +94,11 @@ const adminProductSlice = createSlice({
         state.loading = false;
         state.products = action.payload.products;
         state.currentPage = action.payload.page;
-<<<<<<< HEAD
+
         state.totalPages = action.payload.pages;
-=======
+
         state.totalPages = action.payload.totalPages;
->>>>>>> 1aa479b (Upload 2)
+
         state.totalProducts = action.payload.totalProducts;
       })
       .addCase(fetchAdminProducts.rejected, (state, action) => {

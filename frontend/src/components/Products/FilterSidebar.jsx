@@ -80,11 +80,7 @@ const FilterSidebar = () => {
     } else {
       newFilters[name] = value;
     }
-<<<<<<< HEAD
 
-    // Nếu đổi category, gender, color (radio hoặc single select), reset các bộ lọc array khác nếu cần (tùy bạn)
-=======
->>>>>>> 1aa479b (Upload 2)
     setFilters(newFilters);
     updateURLParams(newFilters);
   };
