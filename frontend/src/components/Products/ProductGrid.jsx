@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
+import { toast } from "sonner"; // Nhớ đã cài thư viện này rồi nhé
 
 const ProductGrid = ({
   products = [],
@@ -10,6 +11,7 @@ const ProductGrid = ({
   toggleFavorite,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate(); // ✅ Dùng để điều hướng
   const productsPerPage = 16;
 
   const indexOfLast = currentPage * productsPerPage;
@@ -40,6 +42,16 @@ const ProductGrid = ({
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
+
+                        const token = localStorage.getItem("userToken");
+                        if (!token) {
+                          toast.error(
+                            "You must be logged in to manage favorites."
+                          );
+                          navigate("/login");
+                          return;
+                        }
+
                         toggleFavorite(product._id);
                       }}
                       className="absolute bottom-2 left-2 p-1 rounded-full shadow-md hover:scale-110 transition-transform flex items-center justify-center"

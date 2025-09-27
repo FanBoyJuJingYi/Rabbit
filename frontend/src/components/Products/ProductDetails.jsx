@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import ProductGrid from "./ProductGrid";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
 import {
@@ -14,6 +14,7 @@ import { addFavorite, removeFavorite } from "../../redux/slices/favoritesSlice";
 const ProductDetails = ({ productId }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const productFetchId = productId || id;
 
@@ -39,16 +40,13 @@ const ProductDetails = ({ productId }) => {
 
   useEffect(() => {
     if (selectedProduct?.images?.length > 0) {
-      // Tạo mapping giữa màu sắc và ảnh tương ứng
       const imagesByColor = {};
       selectedProduct.colors?.forEach((color, index) => {
         imagesByColor[color] = selectedProduct.images[index]?.url;
       });
       setColorImages(imagesByColor);
 
-      // Set ảnh chính ban đầu
       setMainImage(selectedProduct.images[0].url);
-      // Set màu được chọn ban đầu
       if (selectedProduct.colors?.length > 0) {
         setSelectedColor(selectedProduct.colors[0]);
       }
@@ -71,6 +69,13 @@ const ProductDetails = ({ productId }) => {
   };
 
   const toggleFavorite = (productId) => {
+    // Kiểm tra user đăng nhập
+    if (!localStorage.getItem("userToken")) {
+      toast.error("Please log in to manage favorites.");
+      navigate("/login");
+      return;
+    }
+
     const isFav = favorites.includes(productId);
     if (isFav) {
       dispatch(removeFavorite(productId)).then((res) => {
@@ -86,6 +91,13 @@ const ProductDetails = ({ productId }) => {
   };
 
   const handleAddToCart = () => {
+    // Kiểm tra user đăng nhập trước khi thêm giỏ hàng
+    if (!localStorage.getItem("userToken")) {
+      toast.error("Please log in to add products to your cart.");
+      navigate("/login");
+      return;
+    }
+
     if (!selectedSize) {
       toast.error("Please select size before adding to cart.", {
         duration: 1000,
